@@ -14,12 +14,10 @@ class CustomUser(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
 
-    # ADDED: Method to generate the DiceBear avatar URL
     def get_avatar_url(self):
         """Generates the DiceBear avatar URL for the user based on their username."""
         return f"https://api.dicebear.com/9.x/bottts/svg?seed={self.username}&size=80&backgroundColor=b6e3f4"
     
-    # Avoid clashes with default User
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='customuser_set',

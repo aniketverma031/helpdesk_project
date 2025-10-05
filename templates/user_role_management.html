@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
 {% load dict_tags %} 
+{# REMOVED: {% load widget_tweaks %} #}
 
 {% block title %}User Role Management{% endblock %}
 
@@ -52,7 +52,8 @@
                                     <input type="hidden" name="user_id" value="{{ user.id }}">
                                     
                                     {% with form=forms|get_item:user.id %}
-                                        {% render_field form.role %}
+                                        {# MANUAL RENDERING: Class is applied in forms.py #}
+                                        {{ form.role }} 
                                     {% endwith %}
                                 
                             </td>
