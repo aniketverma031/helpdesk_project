@@ -53,6 +53,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'helpdesk_project.urls'
 import os
+RENDER_EXTERNAL_HOST = os.environ.get('WEB_HOST')
+if not DEBUG:
+    # CRITICAL FIX: Include the Render domain in the ALLOWED_HOSTS list
+    ALLOWED_HOSTS = [
+        RENDER_EXTERNAL_HOST, # 'helpdesk-project-5.onrender.com'
+        '127.0.0.1', 
+    ]
+else:
+    ALLOWED_HOSTS = ['*']
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
