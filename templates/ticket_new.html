@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Create New Ticket{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h3 class="mb-0">🎫 Create New Ticket</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="id_title" class="form-label fw-semibold">Title</label>
+                            {% render_field form.title class="form-control form-control-lg" placeholder="Enter ticket title" %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_description" class="form-label fw-semibold">Description</label>
+                            {% render_field form.description class="form-control" rows="4" placeholder="Describe the issue" %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_status" class="form-label fw-semibold">Status</label>
+                            {% render_field form.status class="form-select" %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Users</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                {% for user_obj in all_users %}
+                                    <div class="text-center">
+                                        <img src="{{ user_obj.get_avatar_url }}" class="rounded-circle border" width="60" height="60" alt="{{ user_obj.username }} avatar">
+                                        <div>{{ user_obj.username }} ({{ user_obj.role|slice:":1"|upper }})</div> 
+                                    </div>
+                                {% empty %}
+                                    <p>No other users found in the system.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+                            <i class="bi bi-plus-circle"></i> Create Ticket
+                        </button>
+
+                        <a href="{% url 'tickets_list' %}" class="btn btn-outline-secondary w-100 mt-3">
+                            ← Back to Tickets
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

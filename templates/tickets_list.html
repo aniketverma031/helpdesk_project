@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}All Tickets{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary">All Tickets</h2>
+    <a href="{% url 'ticket_new' %}" class="btn btn-success">+ New Ticket</a>
+</div>
+
+{% if tickets %}
+<div class="row g-4">
+    {% for ticket in tickets %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light">
+                <a href="{% url 'ticket_detail' ticket.id %}" class="text-decoration-none fw-semibold text-dark">
+                    #{{ ticket.id }} - {{ ticket.title|truncatechars:50 }}
+                </a>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <p class="card-text text-muted mb-2">{{ ticket.description|truncatechars:100 }}</p>
+                
+                <div class="d-flex align-items-center mb-2">
+                    <strong>Assigned to:</strong> 
+                    {% if ticket.assigned_to %}
+                        <img src="{{ ticket.assigned_to.get_avatar_url }}" class="rounded-circle ms-2 me-1" width="24" height="24" alt="{{ ticket.assigned_to.username }} avatar">
+                        <span>{{ ticket.assigned_to.username }}</span>
+                    {% else %}
+                        <span class="ms-2">(Unassigned)</span>
+                    {% endif %}
+                </div>
+
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <span class="badge 
+                        {% if ticket.status == 'open' %}bg-success
+                        {% elif ticket.status == 'in_progress' %}bg-info text-dark
+                        {% elif ticket.status == 'closed' %}bg-secondary
+                        {% else %}bg-warning text-dark{% endif %}">
+                        {{ ticket.status|upper }}
+                    </span>
+                    <a href="{% url 'ticket_detail' ticket.id %}" class="btn btn-primary btn-sm">View</a>
+                </div>
+            </div>
+            <div class="card-footer text-muted small">
+                Created: {{ ticket.created_at|date:"M d, Y H:i" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <h5 class="text-muted">No tickets found.</h5>
+    <a href="{% url 'ticket_new' %}" class="btn btn-success mt-3">Create Your First Ticket</a>
+</div>
+{% endif %}
+{% endblock %}

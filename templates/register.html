@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header text-center bg-primary text-white">
+          <h3 class="mb-0">📝 Create Account</h3>
+        </div>
+        <div class="card-body p-4">
+          <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="id_username" class="form-label fw-semibold">Username</label>
+              {{ form.username|add_class:"form-control" }}
+              {% for error in form.username.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="mb-3">
+              <label for="id_password" class="form-label fw-semibold">Password</label>
+              {{ form.password|add_class:"form-control" }}
+              {% for error in form.password.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="mb-3">
+              <label for="id_password2" class="form-label fw-semibold">Confirm Password</label>
+              {{ form.password2|add_class:"form-control" }}
+              {% for error in form.password2.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <small>Already have an account? <a href="{% url 'custom_login' %}">Login here</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
